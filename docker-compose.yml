@@ -1,0 +1,48 @@
+services:
+  backend:
+    build:
+      context: ./backend
+    container_name: unisuam-backend
+    working_dir: /var/www
+    volumes:
+      - ./backend:/var/www
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+    environment:
+      DB_CONNECTION: pgsql
+      DB_HOST: db
+      DB_PORT: 5432
+      DB_DATABASE: unisuam
+      DB_USERNAME: unisuam
+      DB_PASSWORD: secret
+
+  frontend:
+    build:
+      context: ./frontend/unisuam-temp/
+    container_name: unisuam-frontend
+    working_dir: /app
+    volumes:
+      - ./frontend/unisuam-temp:/app
+    ports:
+      - "4200:4200"
+    depends_on:
+      - backend
+    command: bash -c "npm install && npm run start"
+
+  db:
+    image: postgres:15
+    container_name: unisuam-db
+    restart: always
+    environment:
+      POSTGRES_DB: unisuam
+      POSTGRES_USER: unisuam
+      POSTGRES_PASSWORD: secret
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+volumes:
+  pgdata:
