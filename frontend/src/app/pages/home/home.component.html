@@ -1,0 +1,12 @@
+<div class="p-4 max-w-md mx-auto">
+  <h1 class="text-xl font-bold mb-4">Buscar usuário do GitHub</h1>
+  <input
+    [(ngModel)]="username"
+    (keyup.enter)="searchUser()"
+    class="border p-2 rounded w-full"
+    placeholder="Digite o username"
+  />
+  <button (click)="searchUser()" class="mt-2 w-full bg-blue-600 text-white py-2 rounded">
+    Buscar
+  </button>
+</div>
