@@ -1,0 +1,65 @@
+<div class="p-4 max-w-4xl mx-auto">
+  <div *ngIf="user" class="flex flex-col md:flex-row items-center md:items-start gap-4">
+    <img [src]="user.avatar_url" class="w-32 h-32 rounded-full" alt="Avatar" />
+    <div>
+      <h2 class="text-2xl font-bold">{{ user.name }}</h2>
+      <p class="text-gray-600">{{ user.username }}</p>
+      <p class="text-sm italic mt-2">{{ user.bio }}</p>
+      <div class="mt-2 flex flex-col gap-1">
+        <a [href]="user.github_url" target="_blank" class="text-blue-500 underline">GitHub</a>
+        <a [href]="user.blog_url" target="_blank" class="text-blue-500 underline">Blog</a>
+        <p>🏢 {{ user.company }}</p>
+        <p>📍 {{ user.location }}</p>
+        <p>📦 {{ user.public_repos }} repositórios públicos</p>
+        <p>👥 {{ user.followers }} seguidores | seguindo {{ user.following }}</p>
+      </div>
+    </div>
+  </div>
+
+  <hr class="my-6" />
+
+  <h3 class="text-xl font-semibold mb-2">Seguindo</h3>
+  <div *ngIf="loading" class="text-center text-gray-500">Carregando...</div>
+  <div class="my-4">
+    <input
+      type="text"
+      [(ngModel)]="searchTerm"
+      placeholder="Filtrar usuários..."
+      class="w-full border p-2 rounded"
+    />
+  </div>
+
+  <div class="grid sm:grid-cols-2 md:grid-cols-3 gap-4" *ngIf="!loading">
+    <app-user-card *ngFor="let user of filteredFollowings" [user]="user"></app-user-card>
+  </div>
+
+  <div class="flex flex-col items-center gap-2 mt-4">
+    <div class="flex items-center gap-2">
+      <label for="perPageSelect" class="text-sm">Itens por página:</label>
+      <select
+        id="perPageSelect"
+        [(ngModel)]="perPage"
+        (change)="onPerPageChange()"
+        class="border px-2 py-1 rounded"
+      >
+        <option [value]="2">2</option>
+        <option [value]="5">5</option>
+        <option [value]="10">10</option>
+      </select>
+    </div>
+
+    <p class="text-sm text-gray-600">Página {{ page }}</p>
+  </div>
+  <div class="flex justify-center gap-2 mt-6">
+    <button (click)="prevPage()" [disabled]="page === 1" class="px-3 py-1 bg-gray-200 rounded">
+      Anterior
+    </button>
+    <button (click)="nextPage()" [disabled]="!hasMoreData" class="px-3 py-1 bg-blue-500 text-white rounded">
+      Próxima
+    </button>
+  </div>
+
+  <div *ngIf="!hasMoreData" class="text-center text-sm text-gray-500 mt-2">
+    Fim da lista.
+  </div>
+</div>
