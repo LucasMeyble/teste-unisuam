@@ -20,11 +20,11 @@ services:
 
   frontend:
     build:
-      context: ./frontend/unisuam-temp/
+      context: ./frontend/
     container_name: unisuam-frontend
     working_dir: /app
     volumes:
-      - ./frontend/unisuam-temp:/app
+      - ./frontend:/app
     ports:
       - "4200:4200"
     depends_on:
